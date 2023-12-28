@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Try & Guess</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>Guess The Word</h1>
+  </header>
+
+  <main>
+    <div class="game_content">
+      <div class="trail" id="trail_1">
+        <p>Try 1</p>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="trail not_checked" id="trail_2">
+        <p>Try 2</p>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="trail not_checked" id="trail_3">
+        <p>Try 3</p>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="trail not_checked" id="trail_4">
+        <p>Try 4</p>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="trail not_checked" id="trail_5">
+        <p>Try 5</p>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="trail not_checked" id="trail_6">
+        <p>Try 6</p>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button id="check_word">Check word</button>
+        <p><span id="hints">3</span> Hints</p>
+      </div>
+    </div>
+
+    <div class="game_guide">
+      <p>Key Colors</p>
+      <div class="guide_item in_place">
+        <span></span>
+        Letter is correct and in place
+      </div>
+      <div class="guide_item not_in_place">
+        <span></span>
+        Letter is correct but not in place
+      </div>
+      <div class="guide_item not_exist">
+        <span></span>
+        Letter is wrong and not exist in word
+      </div>
+    </div>
+  </main>
+
+  <script src="./main.js"></script>
+</body>
+
+</html>
