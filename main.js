@@ -1,5 +1,14 @@
 const wordsArray = [
-  "purple", "banana"
+  "purple", "banana", "jacket", "rocket", "guitar", "window", "forest", "sunset", "soccer", "pickle",
+  "shadow", "planet", "silver", "basket", "mellow", "travel", "tissue", "waffle", "yellow", "purple",
+  "coffee", "bottle", "flower", "puzzle", "pocket", "honest", "museum", "modern", "cactus", "turtle",
+  "frozen", "syrup", "purple", "banana", "jacket", "rocket", "guitar", "window", "forest", "sunset",
+  "soccer", "pickle", "shadow", "planet", "silver", "basket", "mellow", "travel", "tissue", "waffle",
+  "yellow", "purple", "coffee", "bottle", "flower", "puzzle", "pocket", "honest", "museum", "modern",
+  "cactus", "turtle", "frozen", "syrup", "purple", "banana", "jacket", "rocket", "guitar", "window",
+  "forest", "sunset", "soccer", "pickle", "shadow", "planet", "silver", "basket", "mellow", "travel",
+  "tissue", "waffle", "yellow", "purple", "coffee", "bottle", "flower", "puzzle", "pocket", "honest",
+  "museum", "modern", "cactus", "turtle", "frozen", "syrup"
 ];
 
 const checkWordButton = document.getElementById("check_word");
@@ -47,6 +56,9 @@ function writeCharaterToCharBox(e) {
     if (currentCharacterOrder === 1) return;
     currentCharacterOrder -= 1;
     currentTrailBox.characterBoxes[currentCharacterOrder - 1].innerHTML = '';
+
+    currentTrailBox.characterBoxes.forEach(charElement => charElement.classList.remove('focus'));
+    currentTrailBox.characterBoxes[currentCharacterOrder - 1].classList.add('focus');
     return;
   }
 
