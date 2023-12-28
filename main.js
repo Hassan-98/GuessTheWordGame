@@ -1,22 +1,15 @@
 const wordsArray = [
-  "purple", "banana", "jacket", "rocket", "guitar", "window", "forest", "sunset", "soccer", "pickle",
-  "shadow", "planet", "silver", "basket", "mellow", "travel", "tissue", "waffle", "yellow", "purple",
-  "coffee", "bottle", "flower", "puzzle", "pocket", "honest", "museum", "modern", "cactus", "turtle",
-  "frozen", "syrup", "purple", "banana", "jacket", "rocket", "guitar", "window", "forest", "sunset",
-  "soccer", "pickle", "shadow", "planet", "silver", "basket", "mellow", "travel", "tissue", "waffle",
-  "yellow", "purple", "coffee", "bottle", "flower", "puzzle", "pocket", "honest", "museum", "modern",
-  "cactus", "turtle", "frozen", "syrup", "purple", "banana", "jacket", "rocket", "guitar", "window",
-  "forest", "sunset", "soccer", "pickle", "shadow", "planet", "silver", "basket", "mellow", "travel",
-  "tissue", "waffle", "yellow", "purple", "coffee", "bottle", "flower", "puzzle", "pocket", "honest",
-  "museum", "modern", "cactus", "turtle", "frozen", "syrup"
+  "purple"
 ];
 
 const checkWordButton = document.getElementById("check_word");
 const hintButton = document.getElementById("hint_me");
 const remainingHintSpan = document.getElementById("hints");
 const winningResult = document.querySelector(".winning_result");
+const winningCanvas = document.querySelector('#winning_canvas');
 const failingResult = document.querySelector(".failing_result");
 const trailsBoxes = document.querySelectorAll('.trail');
+
 const maxTrails = 6;
 let currentTrail = 1;
 let remainingHints = 2;
@@ -64,6 +57,10 @@ function writeCharaterToCharBox(e) {
 
   // WRITE A CHARACTER CASE
   if (currentCharacterOrder > maxTrails) return;
+
+  const isEnglishLetter = /^[a-zA-Z]$/.test(e.key);
+  if (!isEnglishLetter) return;
+
   currentTrailBox.characterBoxes[currentCharacterOrder - 1].innerHTML = PRESSED_KEY;
   currentCharacterOrder += 1;
 
@@ -95,6 +92,19 @@ function handleCheckWord() {
 
   if (inPlaceCharsCount === 6) {
     winningResult.classList.add('show');
+
+    setTimeout(() => {
+      const winningConfetti = confetti.create(winningCanvas, {
+        resize: true,
+        useWorker: true
+      });
+
+      winningConfetti({
+        particleCount: 500,
+        spread: 200
+      });
+    }, 300);
+
     isGameOver = true;
     return;
   }
