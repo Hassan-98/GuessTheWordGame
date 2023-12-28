@@ -54,6 +54,9 @@ function writeCharaterToCharBox(e) {
   if (currentCharacterOrder > maxTrails) return;
   currentTrailBox.characterBoxes[currentCharacterOrder - 1].innerHTML = PRESSED_KEY;
   currentCharacterOrder += 1;
+
+  currentTrailBox.characterBoxes.forEach(charElement => charElement.classList.remove('focus'));
+  currentTrailBox.characterBoxes[currentCharacterOrder - 1].classList.add('focus');
 }
 
 window.onkeyup = writeCharaterToCharBox;
@@ -91,6 +94,7 @@ function handleCheckWord() {
   } else {
     currentTrail += 1;
     getCurrentTrailBox().trailBox.classList.remove('not_checked');
+    getCurrentTrailBox().characterBoxes[currentCharacterOrder - 1].classList.add('focus');
   }
 }
 

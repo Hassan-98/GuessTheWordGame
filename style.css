@@ -113,9 +113,15 @@ main .game_content .trail span {
   justify-content: center;
   align-items: center;
   background-color: #fff;
-  border-bottom: 3px solid #000;
+  border: 3px solid #000;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
   border-radius: 4px;
   font-weight: bold;
+}
+main .game_content .trail span.focus {
+  border: 3px solid rgba(1, 11, 158, 0.3411764706);
 }
 @media (max-width: 800px) {
   main .game_content .trail span {

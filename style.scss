@@ -114,9 +114,16 @@ main {
         justify-content: center;
         align-items: center;
         background-color: #fff;
-        border-bottom: 3px solid #000;
+        border: 3px solid #000;
+        border-top-color: transparent;
+        border-left-color: transparent;
+        border-right-color: transparent;
         border-radius: 4px;
         font-weight: bold;
+
+        &.focus {
+          border: 3px solid #010b9e57;
+        }
 
         @media (max-width: 800px) {
           width: 42px;
