@@ -17,6 +17,8 @@ const remainingHintSpan = document.getElementById("hints");
 const winningResult = document.querySelector(".winning_result");
 const winningCanvas = document.querySelector('#winning_canvas');
 const failingResult = document.querySelector(".failing_result");
+const guessedWord = document.querySelector(".the_word");
+const correctWordElement = document.querySelector("#correct_word");
 const trailsBoxes = document.querySelectorAll('.trail');
 
 const maxTrails = 6;
@@ -91,6 +93,9 @@ function handleCheckWord() {
     if (toBeGuessedWordLetters[index] === letter) {
       trailBox.characterBoxes[index].classList.add('in_place');
       inPlaceCharsCount += 1;
+
+      const letterElementInGuessedWord = guessedWord.querySelector(`span:nth-of-type(${index + 1})`);
+      if (letterElementInGuessedWord) letterElementInGuessedWord.innerHTML = letter;
     } else if (toBeGuessedWordLetters.indexOf(letter) !== -1) {
       trailBox.characterBoxes[index].classList.add('not_in_place');
     } else {
@@ -119,12 +124,14 @@ function handleCheckWord() {
   }
 
   if (currentTrail === maxTrails) {
+    correctWordElement.innerHTML = TO_BE_GUESSED_WORD;
     failingResult.classList.add('show');
     isGameOver = true;
     return;
   } else {
     currentTrail += 1;
     getCurrentTrailBox().trailBox.classList.remove('not_checked');
+    trailBox.characterBoxes.forEach(charElement => charElement.classList.remove('focus'));
     getCurrentTrailBox().characterBoxes[currentCharacterOrder - 1].classList.add('focus');
   }
 }
