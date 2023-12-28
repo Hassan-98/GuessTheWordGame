@@ -1,26 +1,22 @@
 const wordsArray = [
-  "purple", "banana", "jacket", "rocket", "guitar", "window", "forest", "sunset", "soccer", "pickle",
-  "shadow", "planet", "silver", "basket", "mellow", "travel", "tissue", "waffle", "yellow", "purple",
-  "coffee", "bottle", "flower", "puzzle", "pocket", "honest", "museum", "modern", "cactus", "turtle",
-  "frozen", "syrup", "purple", "banana", "jacket", "rocket", "guitar", "window", "forest", "sunset",
-  "soccer", "pickle", "shadow", "planet", "silver", "basket", "mellow", "travel", "tissue", "waffle",
-  "yellow", "purple", "coffee", "bottle", "flower", "puzzle", "pocket", "honest", "museum", "modern",
-  "cactus", "turtle", "frozen", "syrup", "purple", "banana", "jacket", "rocket", "guitar", "window",
-  "forest", "sunset", "soccer", "pickle", "shadow", "planet", "silver", "basket", "mellow", "travel",
-  "tissue", "waffle", "yellow", "purple", "coffee", "bottle", "flower", "puzzle", "pocket", "honest",
-  "museum", "modern", "cactus", "turtle", "frozen", "syrup"
+  "purple", "banana"
 ];
 
 const checkWordButton = document.getElementById("check_word");
+const hintButton = document.getElementById("hint_me");
+const remainingHintSpan = document.getElementById("hints");
+const winningResult = document.querySelector(".winning_result");
+const failingResult = document.querySelector(".failing_result");
 const trailsBoxes = document.querySelectorAll('.trail');
 const maxTrails = 6;
 let currentTrail = 1;
+let remainingHints = 2;
 let currentCharacterOrder = 1;
 let isGameOver = false;
 
 
 function getRandomWordFromArray() {
-  return wordsArray[Math.floor(Math.random() * 100)];
+  return wordsArray[Math.floor(Math.random() * wordsArray.length)];
 }
 
 const TO_BE_GUESSED_WORD = getRandomWordFromArray();
@@ -55,7 +51,7 @@ function writeCharaterToCharBox(e) {
   }
 
   // WRITE A CHARACTER CASE
-  if (currentCharacterOrder > 6) return;
+  if (currentCharacterOrder > maxTrails) return;
   currentTrailBox.characterBoxes[currentCharacterOrder - 1].innerHTML = PRESSED_KEY;
   currentCharacterOrder += 1;
 }
@@ -83,13 +79,15 @@ function handleCheckWord() {
   currentCharacterOrder = 1;
 
   if (inPlaceCharsCount === 6) {
-    alert('Congratulations you guessed the word :)');
+    winningResult.classList.add('show');
     isGameOver = true;
+    return;
   }
 
-  if (currentTrail === 6) {
-    alert('Game Over');
+  if (currentTrail === maxTrails) {
+    failingResult.classList.add('show');
     isGameOver = true;
+    return;
   } else {
     currentTrail += 1;
     getCurrentTrailBox().trailBox.classList.remove('not_checked');
@@ -97,3 +95,19 @@ function handleCheckWord() {
 }
 
 checkWordButton.addEventListener('click', handleCheckWord);
+
+function showAHint() {
+  if (isGameOver) return;
+  if (remainingHints === 0) return;
+  const trailBox = getCurrentTrailBox();
+  const randomIndex = Math.floor(Math.random() * TO_BE_GUESSED_WORD.length);
+  const randomHintLetter = TO_BE_GUESSED_WORD[randomIndex];
+
+  trailBox.characterBoxes[randomIndex].innerHTML = randomHintLetter.toUpperCase();
+  trailBox.characterBoxes[randomIndex].classList.add('in_place');
+  remainingHints -= 1;
+
+  remainingHintSpan.innerHTML = remainingHints;
+}
+
+hintButton.addEventListener('click', showAHint);

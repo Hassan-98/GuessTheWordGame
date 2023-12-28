@@ -21,6 +21,57 @@ header h1 {
   text-align: center;
 }
 
+.winning_result,
+.failing_result {
+  height: 100vh;
+  width: 100%;
+  z-index: 1;
+  background-color: #eee;
+  font-size: 28px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: scale(0);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+  text-align: center;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+.winning_result p,
+.failing_result p {
+  width: 100%;
+}
+.winning_result button,
+.failing_result button {
+  margin-top: 15px;
+  background-color: #009788;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  padding: 10px;
+  font-weight: bold;
+  margin-right: 8px;
+}
+.winning_result.show,
+.failing_result.show {
+  transform: scale(1);
+}
+
+.failing_result {
+  background-color: #262626;
+}
+.failing_result p {
+  color: #fff;
+}
+
 main {
   display: flex;
   justify-content: center;

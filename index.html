@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Try & Guess</title>
+  <link rel="shortcut icon" href="logo.png">
   <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -13,6 +14,16 @@
   <header>
     <h1>Guess The Word</h1>
   </header>
+
+  <div class="winning_result">
+    <p>Congratulations you guessed the word 🫡</p>
+    <button onclick="location.reload()">Try again</button>
+  </div>
+
+  <div class="failing_result">
+    <p>Game Over! you failed 🫥</p>
+    <button onclick="location.reload()">Try again</button>
+  </div>
 
   <main>
     <div class="game_content">
@@ -74,7 +85,7 @@
       <!-- Actions -->
       <div class="actions">
         <button id="check_word">Check word</button>
-        <p><span id="hints">3</span> Hints</p>
+        <p id="hint_me"><span id="hints">2</span> Hints</p>
       </div>
     </div>
 
