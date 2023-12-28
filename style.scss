@@ -49,10 +49,13 @@ header {
     position: fixed;
     left: 0;
     top: 0;
+    z-index: 1;
   }
 
   p {
     width: 100%;
+    position: relative;
+    z-index: 3;
   }
 
   button {
@@ -67,6 +70,8 @@ header {
     padding: 10px;
     font-weight: bold;
     margin-right: 8px;
+    position: relative;
+    z-index: 3;
   }
 
   &.show {

@@ -49,10 +49,13 @@ header h1 {
   position: fixed;
   left: 0;
   top: 0;
+  z-index: 1;
 }
 .winning_result p,
 .failing_result p {
   width: 100%;
+  position: relative;
+  z-index: 3;
 }
 .winning_result button,
 .failing_result button {
@@ -67,6 +70,8 @@ header h1 {
   padding: 10px;
   font-weight: bold;
   margin-right: 8px;
+  position: relative;
+  z-index: 3;
 }
 .winning_result.show,
 .failing_result.show {
