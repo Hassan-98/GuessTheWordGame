@@ -61,8 +61,12 @@ function writeCharaterToCharBox(e) {
     currentCharacterOrder -= 1;
     currentTrailBox.characterBoxes[currentCharacterOrder - 1].innerHTML = '';
 
-    currentTrailBox.characterBoxes.forEach(charElement => charElement.classList.remove('focus'));
+    currentTrailBox.characterBoxes.forEach(charElement => {
+      charElement.classList.remove('focus');
+      charElement.setAttribute('contenteditable', 'false');
+    });
     currentTrailBox.characterBoxes[currentCharacterOrder - 1].classList.add('focus');
+    currentTrailBox.characterBoxes[currentCharacterOrder - 1].setAttribute('contenteditable', 'true');
     return;
   }
 
@@ -75,8 +79,12 @@ function writeCharaterToCharBox(e) {
   currentTrailBox.characterBoxes[currentCharacterOrder - 1].innerHTML = PRESSED_KEY;
   currentCharacterOrder += 1;
 
-  currentTrailBox.characterBoxes.forEach(charElement => charElement.classList.remove('focus'));
+  currentTrailBox.characterBoxes.forEach(charElement => {
+    charElement.classList.remove('focus');
+    charElement.setAttribute('contenteditable', 'false');
+  });
   currentTrailBox.characterBoxes[currentCharacterOrder - 1].classList.add('focus');
+  currentTrailBox.characterBoxes[currentCharacterOrder - 1].setAttribute('contenteditable', 'true');
 }
 
 window.onkeyup = writeCharaterToCharBox;
@@ -133,6 +141,7 @@ function handleCheckWord() {
     getCurrentTrailBox().trailBox.classList.remove('not_checked');
     trailBox.characterBoxes.forEach(charElement => charElement.classList.remove('focus'));
     getCurrentTrailBox().characterBoxes[currentCharacterOrder - 1].classList.add('focus');
+    getCurrentTrailBox().characterBoxes[currentCharacterOrder - 1].setAttribute('contenteditable', 'true');
   }
 }
 

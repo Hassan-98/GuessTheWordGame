@@ -158,6 +158,11 @@ main {
         border-right-color: transparent;
         border-radius: 4px;
         font-weight: bold;
+        font-size: 30px;
+
+        &:focus {
+          outline: none;
+        }
 
         &.focus {
           border: 3px solid #010b9e57;
