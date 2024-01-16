@@ -119,6 +119,7 @@ main {
   main {
     width: 100%;
     flex-wrap: wrap;
+    padding: 40px 0;
   }
 }
 main .game_content {
@@ -248,6 +249,7 @@ main .game_guide {
 @media (max-width: 800px) {
   main .game_guide {
     width: 70%;
+    transform: scale(0.8);
   }
 }
 @media (max-width: 500px) {
