@@ -35,7 +35,6 @@ function getRandomWordFromArray() {
 }
 
 const TO_BE_GUESSED_WORD = getRandomWordFromArray();
-console.log(TO_BE_GUESSED_WORD);
 
 function getCurrentTrailBox() {
   return {
@@ -51,14 +50,24 @@ function getCurrentTrailBox() {
   }
 }
 
+const isMobile = window.matchMedia('(max-width: 800px)').matches;
+
 function writeCharaterToCharBox(e) {
   if (isGameOver) return;
   const PRESSED_KEY = e.key;
   const isDeleteKey = e.which === 8 || e.which === 46;
 
-  if (!isDeleteKey && !(/^[a-zA-Z]$/.test(e.key))) return;
+  if (!isDeleteKey && !(/^[a-zA-Z]$/.test(e.key)) && !isMobile) return;
 
   const currentTrailBox = getCurrentTrailBox();
+
+  if (isMobile && currentTrailBox.characterInputs[currentCharacterOrder - 1].value !== '') {
+    currentCharacterOrder += 1;
+
+    if (currentCharacterOrder <= maxTrails) {
+      currentTrailBox.characterInputs[currentCharacterOrder - 1].focus();
+    }
+  }
 
   // DELETE A CHARACTER CASE
   if (isDeleteKey) {
@@ -70,6 +79,7 @@ function writeCharaterToCharBox(e) {
       charElement.classList.remove('focus');
     });
     currentTrailBox.characterInputs[currentCharacterOrder - 1].classList.add('focus');
+    currentTrailBox.characterInputs[currentCharacterOrder - 1].focus();
     return;
   }
 
@@ -92,8 +102,12 @@ function writeCharaterToCharBox(e) {
   }
 }
 
-window.onkeyup = writeCharaterToCharBox;
-// window.oninput = writeCharaterToCharBox;
+document.querySelectorAll('input').forEach(input => {
+  input.addEventListener('keyup', writeCharaterToCharBox);
+  input.onfocus = function () {
+    if (isMobile) currentCharacterOrder = +input.id.slice(-1);
+  }
+})
 
 function handleCheckWord() {
   if (isGameOver) return;
