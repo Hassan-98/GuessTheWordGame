@@ -20,6 +20,7 @@ const failingResult = document.querySelector(".failing_result");
 const guessedWord = document.querySelector(".the_word");
 const correctWordElement = document.querySelector("#correct_word");
 const trailsBoxes = document.querySelectorAll('.trail');
+const firstInput = document.querySelector('#trail_1 input');
 
 const maxTrails = 6;
 let currentTrail = 1;
@@ -27,31 +28,35 @@ let remainingHints = 2;
 let currentCharacterOrder = 1;
 let isGameOver = false;
 
+window.onload = () => firstInput.focus();
 
 function getRandomWordFromArray() {
   return wordsArray[Math.floor(Math.random() * wordsArray.length)];
 }
 
 const TO_BE_GUESSED_WORD = getRandomWordFromArray();
+console.log(TO_BE_GUESSED_WORD);
 
 function getCurrentTrailBox() {
   return {
     trailBox: trailsBoxes[currentTrail - 1],
-    characterBoxes: [
-      trailsBoxes[currentTrail - 1].querySelector('span:nth-of-type(1)'),
-      trailsBoxes[currentTrail - 1].querySelector('span:nth-of-type(2)'),
-      trailsBoxes[currentTrail - 1].querySelector('span:nth-of-type(3)'),
-      trailsBoxes[currentTrail - 1].querySelector('span:nth-of-type(4)'),
-      trailsBoxes[currentTrail - 1].querySelector('span:nth-of-type(5)'),
-      trailsBoxes[currentTrail - 1].querySelector('span:nth-of-type(6)')
+    characterInputs: [
+      trailsBoxes[currentTrail - 1].querySelector('input:nth-of-type(1)'),
+      trailsBoxes[currentTrail - 1].querySelector('input:nth-of-type(2)'),
+      trailsBoxes[currentTrail - 1].querySelector('input:nth-of-type(3)'),
+      trailsBoxes[currentTrail - 1].querySelector('input:nth-of-type(4)'),
+      trailsBoxes[currentTrail - 1].querySelector('input:nth-of-type(5)'),
+      trailsBoxes[currentTrail - 1].querySelector('input:nth-of-type(6)')
     ]
   }
 }
 
 function writeCharaterToCharBox(e) {
   if (isGameOver) return;
-  const PRESSED_KEY = String.fromCharCode(e.which);
+  const PRESSED_KEY = e.key;
   const isDeleteKey = e.which === 8 || e.which === 46;
+
+  if (!isDeleteKey && !(/^[a-zA-Z]$/.test(e.key))) return;
 
   const currentTrailBox = getCurrentTrailBox();
 
@@ -59,55 +64,56 @@ function writeCharaterToCharBox(e) {
   if (isDeleteKey) {
     if (currentCharacterOrder === 1) return;
     currentCharacterOrder -= 1;
-    currentTrailBox.characterBoxes[currentCharacterOrder - 1].innerHTML = '';
+    currentTrailBox.characterInputs[currentCharacterOrder - 1].value = '';
 
-    currentTrailBox.characterBoxes.forEach(charElement => {
+    currentTrailBox.characterInputs.forEach(charElement => {
       charElement.classList.remove('focus');
-      charElement.setAttribute('contenteditable', 'false');
     });
-    currentTrailBox.characterBoxes[currentCharacterOrder - 1].classList.add('focus');
-    currentTrailBox.characterBoxes[currentCharacterOrder - 1].setAttribute('contenteditable', 'true');
+    currentTrailBox.characterInputs[currentCharacterOrder - 1].classList.add('focus');
     return;
   }
 
   // WRITE A CHARACTER CASE
   if (currentCharacterOrder > maxTrails) return;
 
-  const isEnglishLetter = /^[a-zA-Z]$/.test(e.key);
+  const isEnglishLetter = /^[a-zA-Z]$/.test(PRESSED_KEY);
   if (!isEnglishLetter) return;
 
-  currentTrailBox.characterBoxes[currentCharacterOrder - 1].innerHTML = PRESSED_KEY;
+  currentTrailBox.characterInputs[currentCharacterOrder - 1].value = PRESSED_KEY.toUpperCase();
   currentCharacterOrder += 1;
 
-  currentTrailBox.characterBoxes.forEach(charElement => {
+  currentTrailBox.characterInputs.forEach(charElement => {
     charElement.classList.remove('focus');
-    charElement.setAttribute('contenteditable', 'false');
   });
-  currentTrailBox.characterBoxes[currentCharacterOrder - 1].classList.add('focus');
-  currentTrailBox.characterBoxes[currentCharacterOrder - 1].setAttribute('contenteditable', 'true');
+
+  if (currentCharacterOrder <= maxTrails) {
+    currentTrailBox.characterInputs[currentCharacterOrder - 1].classList.add('focus');
+    currentTrailBox.characterInputs[currentCharacterOrder - 1].focus();
+  }
 }
 
 window.onkeyup = writeCharaterToCharBox;
+// window.oninput = writeCharaterToCharBox;
 
 function handleCheckWord() {
   if (isGameOver) return;
   const trailBox = getCurrentTrailBox();
-  const writtenWordLetters = trailBox.characterBoxes.map(element => element.innerHTML.toLowerCase());
-  const toBeGuessedWordLetters = TO_BE_GUESSED_WORD.toLowerCase().split('');
+  const writtenWordLetters = trailBox.characterInputs.map(element => element.value.toUpperCase());
+  const toBeGuessedWordLetters = TO_BE_GUESSED_WORD.toUpperCase().split('');
 
   // Check letters
   let inPlaceCharsCount = 0;
   writtenWordLetters.forEach((letter, index) => {
     if (toBeGuessedWordLetters[index] === letter) {
-      trailBox.characterBoxes[index].classList.add('in_place');
+      trailBox.characterInputs[index].classList.add('in_place');
       inPlaceCharsCount += 1;
 
-      const letterElementInGuessedWord = guessedWord.querySelector(`span:nth-of-type(${index + 1})`);
-      if (letterElementInGuessedWord) letterElementInGuessedWord.innerHTML = letter;
+      const letterElementInGuessedWord = guessedWord.querySelector(`input:nth-of-type(${index + 1})`);
+      if (letterElementInGuessedWord) letterElementInGuessedWord.value = letter;
     } else if (toBeGuessedWordLetters.indexOf(letter) !== -1) {
-      trailBox.characterBoxes[index].classList.add('not_in_place');
+      trailBox.characterInputs[index].classList.add('not_in_place');
     } else {
-      trailBox.characterBoxes[index].classList.add('not_exist');
+      trailBox.characterInputs[index].classList.add('not_exist');
     }
   });
   currentCharacterOrder = 1;
@@ -139,9 +145,10 @@ function handleCheckWord() {
   } else {
     currentTrail += 1;
     getCurrentTrailBox().trailBox.classList.remove('not_checked');
-    trailBox.characterBoxes.forEach(charElement => charElement.classList.remove('focus'));
-    getCurrentTrailBox().characterBoxes[currentCharacterOrder - 1].classList.add('focus');
-    getCurrentTrailBox().characterBoxes[currentCharacterOrder - 1].setAttribute('contenteditable', 'true');
+    trailBox.characterInputs.forEach(charElement => charElement.classList.remove('focus'));
+    getCurrentTrailBox().characterInputs.forEach(charElement => charElement.removeAttribute('disabled'));
+    getCurrentTrailBox().characterInputs[currentCharacterOrder - 1].classList.add('focus');
+    getCurrentTrailBox().characterInputs[currentCharacterOrder - 1].focus();
   }
 }
 
@@ -150,15 +157,17 @@ checkWordButton.addEventListener('click', handleCheckWord);
 function showAHint() {
   if (isGameOver) return;
   if (remainingHints === 0) return;
+
   const trailBox = getCurrentTrailBox();
   const randomIndex = Math.floor(Math.random() * TO_BE_GUESSED_WORD.length);
   const randomHintLetter = TO_BE_GUESSED_WORD[randomIndex];
 
-  trailBox.characterBoxes[randomIndex].innerHTML = randomHintLetter.toUpperCase();
-  trailBox.characterBoxes[randomIndex].classList.add('in_place');
+  trailBox.characterInputs[randomIndex].value = randomHintLetter.toUpperCase();
+  trailBox.characterInputs[randomIndex].classList.add('in_place');
   remainingHints -= 1;
 
   remainingHintSpan.innerHTML = remainingHints;
+  if (remainingHints === 0) remainingHintSpan.parentElement.style.pointerEvents = 'none';
 }
 
 hintButton.addEventListener('click', showAHint);
